@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+<<<<<<< HEAD
+  --background: #d1fbd8; /* Color verde deseado */
+=======
+  --background: #ffffff;
+>>>>>>> d07fb5c (Initial commit from Create Next App)
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+<<<<<<< HEAD
+    color: var(--foreground);
+    background-color: var(--background); /* Usar la variable para el color de fondo */
+    margin: 0; /* Eliminar márgenes predeterminados */
+    padding: 0; /* Eliminar relleno predeterminado */
+    font-family: Arial, Helvetica, sans-serif; /* Puedes elegir otra fuente si lo prefieres */
+=======
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+>>>>>>> d07fb5c (Initial commit from Create Next App)
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
