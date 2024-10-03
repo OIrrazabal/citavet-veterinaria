@@ -1,6 +1,7 @@
 import React from 'react';
 import { Menubar } from 'primereact/menubar';
 import { useRouter } from 'next/router';
+import LogoutButton from './LogoutButton'; // Importa el LogoutButton
 
 const Layout = ({ children }) => {
   const router = useRouter();
@@ -59,6 +60,9 @@ const Layout = ({ children }) => {
             <div className="flex-grow">
               <Menubar model={items} />
             </div>
+
+            {/* Agregar el botón de cierre de sesión aquí */}
+            <LogoutButton /> {/* Asegúrate de que LogoutButton esté importado */}
           </div>
         </div>
       </nav>
@@ -75,3 +79,4 @@ const Layout = ({ children }) => {
 };
 
 export default Layout;
+
