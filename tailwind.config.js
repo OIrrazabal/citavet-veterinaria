@@ -15,7 +15,3 @@ module.exports = {
   },
   plugins: [],
 };
-<<<<<<< HEAD
-
-=======
->>>>>>> d07fb5c (Initial commit from Create Next App)

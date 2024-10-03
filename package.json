@@ -9,10 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@fortawesome/free-brands-svg-icons": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "autoprefixer": "^10.4.20",
     "next": "14.2.13",
     "primeicons": "^7.0.0",
     "primereact": "^10.8.3",
@@ -24,18 +24,7 @@
   "devDependencies": {
     "eslint": "^8",
     "eslint-config-next": "14.2.13",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1"
-=======
-    "react": "^18",
-    "react-dom": "^18",
-    "next": "14.2.13"
-  },
-  "devDependencies": {
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.13"
->>>>>>> d07fb5c (Initial commit from Create Next App)
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13"
   }
 }
