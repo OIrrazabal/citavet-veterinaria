@@ -36,7 +36,7 @@ const GenericForm = ({ role, onSubmit }) => {
               id="name"
               name="name"
               value={formData.name}
-              className="custom-input text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+              className="w-full custom-input text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
               onChange={handleInputChange}
               required
             />
@@ -50,7 +50,7 @@ const GenericForm = ({ role, onSubmit }) => {
               id="lastName"
               name="lastName"
               value={formData.lastName}
-              className="custom-input text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+              className="w-full custom-input text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
               onChange={handleInputChange}
               required
             />
@@ -65,7 +65,7 @@ const GenericForm = ({ role, onSubmit }) => {
               name="email"
               type="email"
               value={formData.email}
-              className="custom-input text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+              className="w-full custom-input text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
               onChange={handleInputChange}
               required
             />
@@ -79,7 +79,7 @@ const GenericForm = ({ role, onSubmit }) => {
               id="phoneNumber"
               name="phoneNumber"
               value={formData.phoneNumber}
-              className="custom-input text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+              className="w-full custom-input text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
               onChange={handleInputChange}
             />
             <label htmlFor="phoneNumber">Número de Teléfono</label>
@@ -92,7 +92,7 @@ const GenericForm = ({ role, onSubmit }) => {
               id="address"
               name="address"
               value={formData.address}
-              className="custom-input text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+              className="w-full custom-input text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
               onChange={handleInputChange}
             />
             <label htmlFor="address">Dirección</label>
@@ -106,7 +106,7 @@ const GenericForm = ({ role, onSubmit }) => {
               name="password"
               type="password"
               value={formData.password}
-              className="custom-input text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+              className="w-full custom-input text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
               onChange={handleInputChange}
               required
             />
@@ -124,7 +124,7 @@ const GenericForm = ({ role, onSubmit }) => {
                   id="petName"
                   name="petName"
                   value={formData.petName}
-                  className="custom-input text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+                  className="w-full custom-input text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
                   onChange={handleInputChange}
                   required
                 />
@@ -137,7 +137,7 @@ const GenericForm = ({ role, onSubmit }) => {
                   id="breed"
                   name="breed"
                   value={formData.breed}
-                  className="custom-input text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+                  className="w-full custom-input text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
                   onChange={handleInputChange}
                 />
                 <label htmlFor="breed">Raza</label>
@@ -149,7 +149,7 @@ const GenericForm = ({ role, onSubmit }) => {
                   id="healthNotes"
                   name="healthNotes"
                   value={formData.healthNotes}
-                  className="custom-input text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+                  className="w-full custom-input text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
                   onChange={handleInputChange}
                   rows="4"
                 />
