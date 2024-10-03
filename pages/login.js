@@ -23,7 +23,7 @@ const Login = () => {
           router.push('/veterinario');
           break;
         case 'cliente':
-          router.push('/services');
+          router.push('/cliente');
           break;
         case 'administrador':
           router.push('/administrador');
