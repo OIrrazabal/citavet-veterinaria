@@ -117,7 +117,10 @@ const GenericForm = ({ role, onSubmit }) => {
         {/* Mostrar campos adicionales si el rol es 'cliente' */}
         {role === 'cliente' && (
           <>
-            <h3>Información de la Mascota</h3>
+            <div className="field">
+              <h2>Información de la Mascota</h2>
+            </div>
+            <h3></h3>
             <div className="field">
               <FloatLabel>
                 <InputText
@@ -168,7 +171,7 @@ const GenericForm = ({ role, onSubmit }) => {
     }
 
         .form-container {
-          max-width: 1000px; /* Ancho máximo del formulario */
+          max-width: 800px; /* Ancho máximo del formulario */
           margin: 20px auto; /* Centrar el formulario */
           padding: 60px; /* Espaciado interno */
           border: 2px solid #ddd; /* Bordes suaves */

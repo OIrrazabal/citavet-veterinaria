@@ -8,7 +8,7 @@ const ClienteRegistration = () => {
 
   return (
     <div>
-      <h2>Registro de Cliente</h2>
+      <h2>Completa con tus datos</h2>
       <GenericForm role="cliente" onSubmit={handleSubmit} />
     </div>
   );
