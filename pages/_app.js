@@ -5,15 +5,19 @@ import 'primeicons/primeicons.css';                              // Iconos de Pr
 import '../styles/globals.css'; 
 import { AuthProvider } from '../context/AuthContext';
 import { UserProvider } from '../context/UserContext';
+import { CartProvider } from '../context/CartContext';            // Importa el CartProvider
 
 function MyApp({ Component, pageProps }) {
   return (
     <AuthProvider>
       <UserProvider>
-        <Component {...pageProps} />
+        <CartProvider>  {/* Envuelve toda la aplicación en el contexto del carrito */}
+          <Component {...pageProps} />
+        </CartProvider>
       </UserProvider>
     </AuthProvider>
   );
 }
 
 export default MyApp;
+

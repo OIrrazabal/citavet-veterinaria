@@ -1,5 +1,7 @@
-import Layout from '../components/Layout'; // Importar el Layout
-import ProtectedRoute from '../components/ProtectedRoute';
+import { useRouter } from 'next/router';
+import { useAuth } from '../context/AuthContext'; // Contexto de autenticación
+import { useCart } from '../context/CartContext'; // Contexto del carrito
+import Layout from '../components/Layout';
 
 const services = [
   { name: 'Baño y Peluquería', icon: '🐶' },
@@ -12,6 +14,21 @@ const services = [
 ];
 
 export default function Services() {
+  const { user } = useAuth(); // Verifica si el usuario está logueado
+  const { addToCart } = useCart(); // Función para agregar al carrito
+  const router = useRouter();
+
+  const handleAddToCart = (service) => {
+    if (!user) {
+      // Si el usuario no está logueado, redirigirlo al login
+      router.push('/login');
+    } else {
+      // Si está logueado, agregar el servicio al carrito
+      addToCart(service);
+      alert(`Has agregado ${service.name} al carrito.`);
+    }
+  };
+
   return (
     <Layout>
       <div className="container mx-auto p-8 bg-green-100">
@@ -26,7 +43,13 @@ export default function Services() {
               className="flex flex-col items-center justify-center p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
             >
               <div className="text-4xl mb-4">{service.icon}</div>
-              <h3 className="text-lg font-semibold">{service.name}</h3>
+              <h3 className="text-lg font-semibold mb-4">{service.name}</h3>
+              <button
+                onClick={() => handleAddToCart(service)} // Lógica para agregar al carrito
+                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300"
+              >
+                Agregar al Carrito
+              </button>
             </div>
           ))}
         </div>
