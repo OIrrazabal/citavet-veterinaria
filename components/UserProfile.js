@@ -5,14 +5,14 @@ const UserProfile = () => {
   const { user } = useUser(); // Obtén el usuario del contexto
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center mr-auto">
       {user ? ( // Verifica si hay un usuario logueado
         <>
           <span className="mr-2">{user.name}</span> {/* Muestra el nombre del usuario */}
-          <span className="material-icons">account_circle</span> {/* Icono de usuario */}
+          <span className="pi pi-user"></span> {/* Icono de usuario */}
         </>
       ) : (
-        <span>No logueado</span> // Mensaje alternativo si no hay usuario logueado
+        <span></span> // Mensaje alternativo si no hay usuario logueado
       )}
     </div>
   );

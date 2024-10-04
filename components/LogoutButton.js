@@ -7,8 +7,9 @@ const LogoutButton = () => {
   const router = useRouter();
 
   const handleLogout = () => {
-    logout(); // Llama a la función de cierre de sesión
-    router.push('/login'); // Redirige al usuario a la página de login
+    logout(); // Cierra sesión
+    router.push('/login'); // Redirige al login
+    router.reload(); // Recarga la página para actualizar el estado del usuario
   };
 
   return (
@@ -22,3 +23,4 @@ const LogoutButton = () => {
 };
 
 export default LogoutButton;
+
