@@ -4,25 +4,22 @@ import { useAuth } from '../context/AuthContext'; // Importa el contexto de aute
 import { useCart } from '../context/CartContext'; // Importa el contexto del carrito
 
 const ClientePage = () => {
-  const { currentUser } = useAuth(); // Cambiado de user a currentUser
-  const { cart } = useCart(); // Obtiene los servicios en el carrito
-
-  // Calcula el total de los servicios en el carrito
-  const total = cart.length; // Modifica esto si necesitas calcular un total en valor monetario
+  const { currentUser } = useAuth(); // Obtiene el usuario autenticado
+  const { cart, removeFromCart, totalItems } = useCart(); // Obtiene el carrito, removeFromCart y totalItems
 
   return (
     <Layout>
       <div className="container mx-auto p-8 bg-green-100">
         <h1 className="text-3xl font-bold text-center mt-10">Perfil de Usuario</h1>
         
-        {/* Verifica si el usuario está definido */}
-        {currentUser ? ( // Cambiado de user a currentUser
+        {/* Verifica si el usuario está autenticado */}
+        {currentUser ? (
           <>
             {/* Información del perfil del usuario */}
             <div className="text-center mt-5">
-              <h2 className="text-2xl">{currentUser.name}</h2> {/* Cambiado a currentUser */}
-              <p>Email: {currentUser.email}</p> {/* Cambiado a currentUser */}
-              <p>Rol: {currentUser.role}</p> {/* Cambiado a currentUser */}
+              <h2 className="text-2xl">{currentUser.name}</h2>
+              <p>Email: {currentUser.email}</p>
+              <p>Rol: {currentUser.role}</p>
             </div>
 
             {/* Sección del carrito */}
@@ -30,8 +27,14 @@ const ClientePage = () => {
             {cart.length > 0 ? (
               <ul className="mt-4">
                 {cart.map((service, index) => (
-                  <li key={index} className="py-2">
-                    {service.name} {/* Ajusta esto para mostrar el nombre del servicio */}
+                  <li key={index} className="py-2 flex justify-between items-center">
+                    <span>{service.name}</span> {/* Muestra el nombre del servicio */}
+                    <button
+                      className="ml-4 bg-red-500 text-white p-1 rounded"
+                      onClick={() => removeFromCart(service.id)} // Botón para eliminar servicio
+                    >
+                      Eliminar
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -41,7 +44,7 @@ const ClientePage = () => {
             
             {/* Total de servicios en el carrito */}
             <div className="mt-4">
-              <strong>Total de servicios en el carrito: {total}</strong>
+              <strong>Total de servicios en el carrito: {totalItems}</strong>
             </div>
           </>
         ) : (
@@ -53,3 +56,4 @@ const ClientePage = () => {
 };
 
 export default ClientePage;
+
