@@ -5,7 +5,10 @@ import { useCart } from '../context/CartContext'; // Importa el contexto del car
 
 const ClientePage = () => {
   const { currentUser } = useAuth(); // Obtiene el usuario autenticado
-  const { cart, removeFromCart, totalItems } = useCart(); // Obtiene el carrito, removeFromCart y totalItems
+  const { cart, removeFromCart } = useCart(); // Obtiene el carrito y removeFromCart
+
+  // Log para verificar el estado del carrito
+  console.log('Cart:', cart);
 
   return (
     <Layout>
@@ -31,7 +34,7 @@ const ClientePage = () => {
                     <span>{service.name}</span> {/* Muestra el nombre del servicio */}
                     <button
                       className="ml-4 bg-red-500 text-white p-1 rounded"
-                      onClick={() => removeFromCart(service.id)} // Botón para eliminar servicio
+                      onClick={() => removeFromCart(service.name)} // Cambiado a service.name para eliminar por nombre
                     >
                       Eliminar
                     </button>
@@ -44,7 +47,7 @@ const ClientePage = () => {
             
             {/* Total de servicios en el carrito */}
             <div className="mt-4">
-              <strong>Total de servicios en el carrito: {totalItems}</strong>
+              <strong>Total de servicios en el carrito: {cart.length}</strong> {/* Total de elementos en el carrito */}
             </div>
           </>
         ) : (
@@ -56,4 +59,6 @@ const ClientePage = () => {
 };
 
 export default ClientePage;
+
+
 

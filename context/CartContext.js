@@ -28,6 +28,22 @@ export const CartProvider = ({ children }) => {
       console.error('Error al agregar el servicio al carrito', error);
     }
   };
+  
+
+  // Función para eliminar un servicio del carrito en el backend (Express)
+  const removeFromCart = async (service) => {
+    try {
+      // Aquí puedes crear una ruta en tu backend para eliminar el servicio del carrito.
+      // Asumiendo que el backend tiene una ruta para eliminar un servicio
+      const response = await axios.delete('http://localhost:3000/api/cart', {
+        data: { service }, // Eliminar el servicio del carrito
+        withCredentials: true
+      });
+      setCart(response.data.cart); // Actualiza el carrito después de la eliminación
+    } catch (error) {
+      console.error('Error al eliminar el servicio del carrito', error);
+    }
+  };
 
   // Obtener el carrito de la sesión cuando se monte el componente
   useEffect(() => {
@@ -35,8 +51,9 @@ export const CartProvider = ({ children }) => {
   }, []);
 
   return (
-    <CartContext.Provider value={{ cart, addToCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
       {children}
     </CartContext.Provider>
   );
 };
+

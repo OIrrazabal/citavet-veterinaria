@@ -4,7 +4,7 @@ import 'primereact/resources/primereact.min.css';                // Estilos de P
 import 'primeicons/primeicons.css';                              // Iconos de PrimeIcons
 import '../styles/globals.css'; 
 import { AuthProvider } from '../context/AuthContext';
-import { UserProvider } from '../context/UserContext';
+import { UserProvider } from '../context/UserContext'; // Asegúrate de que este contexto se use en tu aplicación
 import { CartProvider } from '../context/CartContext';            // Importa el CartProvider
 
 function MyApp({ Component, pageProps }) {
@@ -20,4 +20,5 @@ function MyApp({ Component, pageProps }) {
 }
 
 export default MyApp;
+
 

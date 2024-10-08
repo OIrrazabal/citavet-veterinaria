@@ -4,18 +4,18 @@ import { useCart } from '../context/CartContext'; // Contexto del carrito
 import Layout from '../components/Layout';
 
 const services = [
-  { name: 'Baño y Peluquería', icon: '🐶' },
-  { name: 'Desparacitación', icon: '🧹' },
-  { name: 'Consulta Médica', icon: '🩺' },
-  { name: 'Análisis Clínicos', icon: '🏥' },
-  { name: 'Cirugía e Internación', icon: '🩹' },
-  { name: 'Vacunación', icon: '💉' },
-  { name: 'Consultas a domicilio', icon: '🏠' },
+  { name: 'Baño y Peluquería', icon: '🐶', price: 25 },
+  { name: 'Desparacitación', icon: '🧹', price: 15 },
+  { name: 'Consulta Médica', icon: '🩺', price: 30 },
+  { name: 'Análisis Clínicos', icon: '🏥', price: 50 },
+  { name: 'Cirugía e Internación', icon: '🩹', price: 100 },
+  { name: 'Vacunación', icon: '💉', price: 20 },
+  { name: 'Consultas a domicilio', icon: '🏠', price: 40 },
 ];
 
 export default function Services() {
   const { user } = useAuth(); // Verifica si el usuario está logueado
-  const { addToCart } = useCart(); // Función para agregar al carrito
+  const { addToCart, cart } = useCart(); // Funciones del carrito
   const router = useRouter();
 
   const handleAddToCart = (service) => {
@@ -29,6 +29,9 @@ export default function Services() {
     }
   };
 
+  // Calcular el total del carrito
+  const total = cart.reduce((acc, service) => acc + service.price, 0);
+
   return (
     <Layout>
       <div className="container mx-auto p-8 bg-green-100">
@@ -37,21 +40,31 @@ export default function Services() {
         
         {/* Sección de servicios */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8">
-          {services.map((service) => (
-            <div
-              key={service.name}
-              className="flex flex-col items-center justify-center p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
-            >
-              <div className="text-4xl mb-4">{service.icon}</div>
-              <h3 className="text-lg font-semibold mb-4">{service.name}</h3>
-              <button
-                onClick={() => handleAddToCart(service)} // Lógica para agregar al carrito
-                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300"
+          {services.map((service) => {
+            const isInCart = cart.some(item => item.name === service.name); // Verifica si el servicio está en el carrito
+            return (
+              <div
+                key={service.name}
+                className="flex flex-col items-center justify-center p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
               >
-                Agregar al Carrito
-              </button>
-            </div>
-          ))}
+                <div className="text-4xl mb-4">{service.icon}</div>
+                <h3 className="text-lg font-semibold mb-4">{service.name}</h3>
+                <p className="text-lg font-semibold mb-4">${service.price}</p> {/* Mostrar precio */}
+                <button
+                  onClick={() => handleAddToCart(service)} // Lógica para agregar al carrito
+                  className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300 mb-2"
+                  disabled={isInCart} // Desactiva el botón si ya está en el carrito
+                >
+                  {isInCart ? 'Ya en el Carrito' : 'Agregar al Carrito'}
+                </button>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Mostrar total del carrito */}
+        <div className="text-right mt-5">
+          <h2 className="text-2xl font-bold">Total: ${total}</h2>
         </div>
       </div>
     </Layout>
