@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const session = require('express-session'); // Importar express-session
 const cors = require('cors'); // Importar CORS para permitir la comunicación entre frontend y backend
@@ -16,6 +15,7 @@ app.prepare().then(() => {
   server.use(cors({
     origin: 'http://localhost:3000', // Esto es la URL de tu frontend en desarrollo
     credentials: true, // Permitir enviar cookies y autenticación
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
   }));
 
   // Permitir JSON en las solicitudes
@@ -27,7 +27,7 @@ app.prepare().then(() => {
     resave: false,
     saveUninitialized: true,
     cookie: {
-      secure: false, // Cambia a true si usas HTTPS
+      secure: process.env.NODE_ENV === 'production', // Solo seguro en HTTPS
       maxAge: 1000 * 60 * 60 * 24, // 1 día de duración de la sesión
     },
   }));
@@ -44,14 +44,14 @@ app.prepare().then(() => {
   // Rutas de autenticación
   server.post('/api/login', (req, res) => {
     const { email, password } = req.body;
-    // Aquí debes verificar el usuario en tu base de datos o arreglo de usuarios
-    const user = { email, role: 'cliente' }; // Simulando un usuario autenticado, reemplaza esto con tu lógica
 
+    // Simular autenticación (ajustar según tu lógica)
     if (email === 'cliente@example.com' && password === 'cliente') {
+      const user = { email, role: 'cliente' }; // Simular el usuario logueado
       req.session.user = user; // Guardar el usuario en la sesión
-      res.json({ user }); // Devolver el usuario
+      return res.json({ user });
     } else {
-      res.status(401).json({ message: 'Credenciales inválidas' }); // Error de autenticación
+      return res.status(401).json({ message: 'Correo o contraseña incorrectos' });
     }
   });
 
@@ -91,7 +91,7 @@ app.prepare().then(() => {
   server.delete('/api/cart', verificarAutenticacion, (req, res) => {
     const { service } = req.body; // Recibe el servicio desde el frontend
     if (req.session.cart) {
-      req.session.cart = req.session.cart.filter((s) => s.name !== service.name); // Elimina el servicio del carrito
+      req.session.cart = req.session.cart.filter((s) => s.id !== service.id); // Elimina por ID en lugar de nombre
     }
     res.json({ message: 'Servicio eliminado del carrito', cart: req.session.cart }); // Retorna el carrito actualizado
   });
@@ -109,3 +109,4 @@ app.prepare().then(() => {
   console.error(err.stack);
   process.exit(1);
 });
+

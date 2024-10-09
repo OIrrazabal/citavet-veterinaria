@@ -1,45 +1,58 @@
-// login.js
 import Head from 'next/head';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '../components/Layout'; 
-import users from '../data/users';
-import { useUser } from '../context/UserContext'; // Importa el contexto
+import { useUser } from '../context/UserContext';
+import axios from 'axios';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
+  const [error, setError] = useState(null); // Para manejar errores
   const router = useRouter();
   const { setUser } = useUser(); // Obtén setUser del contexto
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null); // Limpiar errores previos
 
-    // Buscar el usuario
-    const user = users.find((user) => user.email === email && user.password === password);
+    try {
+      // Hacer solicitud al backend para autenticación
+      const response = await axios.post('http://localhost:3000/api/login', 
+        { email, password, keepLoggedIn }, 
+        { withCredentials: true } // Esto asegura que las cookies de sesión se gestionen correctamente
+      );
+      const user = response.data.user; // Recibir el usuario desde el backend
 
-    if (user) {
-      setUser(user); // Establecer el usuario en el contexto
-      // Redirigir según el rol del usuario
-      switch (user.role) {
-        case 'veterinario':
-          router.push('/veterinario');
-          break;
-        case 'cliente':
-          router.push('/cliente');
-          break;
-        case 'administrador':
-          router.push('/administrador');
-          break;
-        case 'recepcionista':
-          router.push('/recepcionista');
-          break;
-        default:
-          break;
+      if (user) {
+        setUser(user); // Establecer el usuario en el contexto
+
+        // Redirigir según el rol del usuario
+        switch (user.role) {
+          case 'veterinario':
+            router.push('/veterinario');
+            break;
+          case 'cliente':
+            router.push('/cliente');
+            break;
+          case 'administrador':
+            router.push('/administrador');
+            break;
+          case 'recepcionista':
+            router.push('/recepcionista');
+            break;
+          default:
+            break;
+        }
       }
-    } else {
-      alert('Credenciales inválidas');
+    } catch (error) {
+      // Verificar si el backend ha proporcionado un mensaje de error
+      if (error.response && error.response.data && error.response.data.message) {
+        setError(error.response.data.message); // Mostrar mensaje específico del backend
+      } else {
+        setError('Credenciales inválidas');
+      }
     }
   };
 
@@ -84,6 +97,7 @@ const Login = () => {
               </label>
               <a href="#" className="text-blue-500 hover:underline text-sm">¿Olvidaste tu contraseña?</a>
             </div>
+            {error && <p className="text-red-500 text-center mb-4">{error}</p>} {/* Mostrar errores */}
             <button
               type="submit"
               className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
@@ -103,3 +117,5 @@ const Login = () => {
 };
 
 export default Login;
+
+

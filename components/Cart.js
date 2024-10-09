@@ -19,8 +19,8 @@ const Cart = () => {
         <p>No hay productos en tu carrito.</p>
       ) : (
         <ul className="list-disc">
-          {cart.map((item, index) => (
-            <li key={index} className="flex justify-between items-center mb-2">
+          {cart.map((item) => (
+            <li key={item.id} className="flex justify-between items-center mb-2"> {/* Usar item.id en vez de index */}
               <span>{item.name}</span>
               <button
                 onClick={() => removeFromCart(item)}
@@ -37,3 +37,4 @@ const Cart = () => {
 };
 
 export default Cart;
+

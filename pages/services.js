@@ -18,14 +18,16 @@ export default function Services() {
   const { addToCart, cart } = useCart(); // Funciones del carrito
   const router = useRouter();
 
-  const handleAddToCart = (service) => {
+  const handleAddToCart = async (service) => {
     if (!user) {
       // Si el usuario no está logueado, redirigirlo al login
       router.push('/login');
     } else {
       // Si está logueado, agregar el servicio al carrito
-      addToCart(service);
+      await addToCart(service); // Espera a que se agregue el servicio al carrito
       alert(`Has agregado ${service.name} al carrito.`);
+      // Redirige a la página de cliente después de agregar al carrito
+      router.push('/cliente');
     }
   };
 
