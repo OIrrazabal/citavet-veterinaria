@@ -47,7 +47,7 @@ app.prepare().then(() => {
 
     // Simular autenticación (ajustar según tu lógica)
     if (email === 'cliente@example.com' && password === 'cliente') {
-      const user = { email, role: 'cliente' }; // Simular el usuario logueado
+      const user = { email, role: 'cliente', name: 'Pepe Lopez' }; // Simular el usuario logueado
       req.session.user = user; // Guardar el usuario en la sesión
       return res.json({ user });
     } else {
