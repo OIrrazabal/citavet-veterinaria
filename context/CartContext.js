@@ -1,7 +1,6 @@
 // context/CartContext.js
 import { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios'; // Asegúrate de tener Axios instalado (npm install axios)
-import { useUser } from './UserContext'; // Verificar si el usuario está autenticado
 
 const CartContext = createContext();
 
@@ -11,11 +10,9 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]); // Estado del carrito
   const [loading, setLoading] = useState(false); // Estado de carga
   const [error, setError] = useState(null); // Estado de errores
-  const { user } = useUser(); // Obtener el usuario desde el contexto de usuario
 
   // Función para obtener el carrito desde el backend (Express)
   const fetchCart = async () => {
-    if (!user) return; // Si el usuario no está autenticado, no hacer nada
     setLoading(true);
     setError(null);
     try {
@@ -30,11 +27,11 @@ export const CartProvider = ({ children }) => {
   };
 
   const addToCart = async (service) => {
-    if (!user) return; // Solo permitir agregar si el usuario está autenticado
     setLoading(true);
     setError(null);
+    let response; // Declarar response aquí
     try {
-      const response = await axios.post(
+      response = await axios.post(
         'http://localhost:3000/api/cart',
         { service },
         { withCredentials: true }
@@ -46,12 +43,11 @@ export const CartProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-    return response; // Asegúrate de devolver la respuesta para que funcione con await
+    return response; // Ahora response está definida correctamente
   };
-  
+
   // Función para eliminar un servicio del carrito en el backend (Express)
   const removeFromCart = async (service) => {
-    if (!user) return; // Solo permitir eliminar si el usuario está autenticado
     setLoading(true);
     setError(null);
     try {
@@ -68,12 +64,10 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // Obtener el carrito de la sesión cuando el usuario está autenticado y se monta el componente
+  // Obtener el carrito de la sesión cuando se monta el componente
   useEffect(() => {
-    if (user) {
-      fetchCart(); // Solo obtener el carrito si hay un usuario autenticado
-    }
-  }, [user]); // Se ejecuta cada vez que cambia el usuario
+    fetchCart(); // Siempre obtener el carrito al montar el componente
+  }, []); // Se ejecuta solo una vez al montar el componente
 
   return (
     <CartContext.Provider value={{ cart, addToCart, removeFromCart, loading, error }}>
@@ -81,4 +75,5 @@ export const CartProvider = ({ children }) => {
     </CartContext.Provider>
   );
 };
+
 

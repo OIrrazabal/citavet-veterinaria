@@ -4,9 +4,11 @@ import { Menubar } from 'primereact/menubar';
 import { useRouter } from 'next/router';
 import LogoutButton from './LogoutButton'; // Importa el LogoutButton
 import UserProfile from './UserProfile'; // Importa el componente UserProfile
+import { useCart } from '../context/CartContext'; // Importa el contexto del carrito
 
 const Layout = ({ children }) => {
   const router = useRouter();
+  const { cart } = useCart(); // Obtiene el carrito del contexto
 
   // Definimos los items del menú de navegación
   const items = [
@@ -63,11 +65,23 @@ const Layout = ({ children }) => {
               <Menubar model={items} />
             </div>
 
-            {/* Mostrar el nombre del usuario y el icono */}
-            <UserProfile /> {/* Aquí se muestra el nombre del usuario y el icono */}
+            {/* Sección para UserProfile, Carrito y Logout, alineados a la derecha */}
+            <div className="flex items-center space-x-4">
+              {/* Mostrar el nombre del usuario y el icono */}
+              <UserProfile /> {/* Aquí se muestra el nombre del usuario y el icono */}
 
-            {/* Agregar el botón de cierre de sesión aquí */}
-            <LogoutButton /> {/* Asegúrate de que LogoutButton esté importado */}
+              {/* Agregar el icono del carrito aquí */}
+              <div className="flex items-center cursor-pointer" onClick={() => router.push('/cliente')}>
+                <i className="pi pi-shopping-cart mr-2"></i>
+                {cart.length > 0 && (
+                  <span className="p-tag p-tag-danger">{cart.length}</span> // Muestra la cantidad de items en el carrito
+                )}
+                <span className="hidden md:block">Carrito</span>
+              </div>
+
+              {/* Agregar el botón de cierre de sesión aquí */}
+              <LogoutButton /> {/* Asegúrate de que LogoutButton esté importado */}
+            </div>
           </div>
         </div>
       </nav>

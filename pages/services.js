@@ -1,34 +1,75 @@
 import { useRouter } from 'next/router';
-import { useAuth } from '../context/AuthContext'; // Contexto de autenticación
 import { useCart } from '../context/CartContext'; // Contexto del carrito
 import Layout from '../components/Layout';
+import { useState } from 'react'; // Importa useState para manejar el estado de la cantidad
 
 const services = [
-  { name: 'Baño y Peluquería', icon: '🐶', price: 25 },
-  { name: 'Desparacitación', icon: '🧹', price: 15 },
-  { name: 'Consulta Médica', icon: '🩺', price: 30 },
-  { name: 'Análisis Clínicos', icon: '🏥', price: 50 },
-  { name: 'Cirugía e Internación', icon: '🩹', price: 100 },
-  { name: 'Vacunación', icon: '💉', price: 20 },
-  { name: 'Consultas a domicilio', icon: '🏠', price: 40 },
+  { 
+    id: 1, 
+    name: 'Baño y Peluquería', 
+    description: "Baño normal utilizando jabón neutro y secado con toalla.", 
+    icon: '🐶', 
+    price: 60000 
+  },
+  { 
+    id: 2, 
+    name: 'Desparacitación', 
+    description: "Tratamiento para eliminar parásitos internos y externos.", 
+    icon: '🧹', 
+    price: 150000 
+  },
+  { 
+    id: 3, 
+    name: 'Consulta Médica', 
+    description: "Examen clínico general y diagnóstico por veterinario.", 
+    icon: '🩺', 
+    price: 300000 
+  },
+  { 
+    id: 4, 
+    name: 'Análisis Clínicos', 
+    description: "Exámenes de laboratorio para diagnóstico de enfermedades.", 
+    icon: '🏥', 
+    price: 500000 
+  },
+  { 
+    id: 5, 
+    name: 'Cirugía e Internación', 
+    description: "Procedimientos quirúrgicos y cuidados postoperatorios.", 
+    icon: '🩹', 
+    price: 1000000 
+  },
+  { 
+    id: 6, 
+    name: 'Vacunación', 
+    description: "Aplicación de vacunas para prevenir enfermedades.", 
+    icon: '💉', 
+    price: 200000 
+  },
+  { 
+    id: 7, 
+    name: 'Consultas a domicilio', 
+    description: "Visitas de veterinario a tu hogar para atención de mascotas.", 
+    icon: '🏠', 
+    price: 400000 
+  },
 ];
 
 export default function Services() {
-  const { user } = useAuth(); // Verifica si el usuario está logueado
-  const { addToCart, cart } = useCart(); // Funciones del carrito
+  const { addToCart, removeFromCart, cart } = useCart(); // Funciones del carrito
   const router = useRouter();
 
-  const handleAddToCart = async (service) => {
-    if (!user) {
-      // Si el usuario no está logueado, redirigirlo al login
-      router.push('/login');
-    } else {
-      // Si está logueado, agregar el servicio al carrito
+  const handleAddToCart = async (service, quantity) => {
+    // Agregar el servicio al carrito según la cantidad
+    for (let i = 0; i < quantity; i++) {
       await addToCart(service); // Espera a que se agregue el servicio al carrito
-      alert(`Has agregado ${service.name} al carrito.`);
-      // Redirige a la página de cliente después de agregar al carrito
-      router.push('/cliente');
     }
+    alert(`Has agregado ${quantity} ${service.name}(s) al carrito.`);
+  };
+
+  const handleRemoveFromCart = async (service) => {
+    await removeFromCart(service); // Lógica para eliminar el servicio del carrito
+    alert(`Has eliminado ${service.name} del carrito.`);
   };
 
   // Calcular el total del carrito
@@ -43,22 +84,56 @@ export default function Services() {
         {/* Sección de servicios */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8">
           {services.map((service) => {
-            const isInCart = cart.some(item => item.name === service.name); // Verifica si el servicio está en el carrito
+            const isInCart = cart.some(item => item.id === service.id); // Verifica si el servicio está en el carrito
+            const serviceCount = cart.filter(item => item.id === service.id).length; // Cuenta cuántas veces está el servicio en el carrito
+
+            // Estado para manejar la cantidad a agregar
+            const [quantity, setQuantity] = useState(1); // Inicializa la cantidad en 1
+
             return (
               <div
-                key={service.name}
+                key={service.id}
                 className="flex flex-col items-center justify-center p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
               >
                 <div className="text-4xl mb-4">{service.icon}</div>
                 <h3 className="text-lg font-semibold mb-4">{service.name}</h3>
-                <p className="text-lg font-semibold mb-4">${service.price}</p> {/* Mostrar precio */}
+                <p className="text-sm text-gray-600">{service.description}</p> 
+                <p className="text-lg font-semibold mb-4">{service.price.toLocaleString('es-PY')} Gs.</p> {/* Mostrar precio */}
+                
+                {/* Campo para ingresar la cantidad */}
+                <div className="flex items-center mb-2">
+                  <label className="mr-2">Cantidad:</label>
+                  <input 
+                    type="number" 
+                    min="1" 
+                    value={quantity} 
+                    onChange={(e) => setQuantity(Number(e.target.value))} 
+                    className="border rounded p-1 w-16"
+                  />
+                </div>
+
+                {/* Mostrar la cantidad de servicios en el carrito */}
+                {isInCart && (
+                  <p className="text-sm text-gray-500">Cantidad en carrito: {serviceCount}</p>
+                )}
+
                 <button
-                  onClick={() => handleAddToCart(service)} // Lógica para agregar al carrito
+                  onClick={() => handleAddToCart(service, quantity)} // Lógica para agregar al carrito
                   className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300 mb-2"
-                  disabled={isInCart} // Desactiva el botón si ya está en el carrito
+                  //disabled={isInCart} // Desactiva el botón si ya está en el carrito
                 >
                   {isInCart ? 'Ya en el Carrito' : 'Agregar al Carrito'}
                 </button>
+
+                {/* Botón para eliminar del carrito */}
+                {isInCart && (
+                  <button
+                    onClick={() => handleRemoveFromCart(service)} // Lógica para eliminar del carrito
+                    className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition-colors duration-300"
+                  >
+                    Eliminar
+                  </button>
+                )}
               </div>
             );
           })}
@@ -66,9 +141,10 @@ export default function Services() {
 
         {/* Mostrar total del carrito */}
         <div className="text-right mt-5">
-          <h2 className="text-2xl font-bold">Total: ${total}</h2>
+          <h2 className="text-2xl font-bold">Total: {total.toLocaleString('es-PY')} Gs.</h2>
         </div>
       </div>
     </Layout>
   );
 }
+

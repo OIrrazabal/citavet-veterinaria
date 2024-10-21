@@ -4,7 +4,7 @@ const cors = require('cors'); // Importar CORS para permitir la comunicación en
 const next = require('next'); // Importar Next.js
 
 const port = 3000;
-const dev = process.env.NODE_ENV !== 'production'; // Determinar si está en desarrollo o producción
+const dev = process.env.NODE_ENV !== 'development'; // Determinar si está en desarrollo o producción
 const app = next({ dev }); // Inicializar Next.js
 const handle = app.getRequestHandler(); // Obtener el manejador de solicitudes de Next.js
 
@@ -33,13 +33,13 @@ app.prepare().then(() => {
   }));
 
   // Middleware para verificar autenticación
-  function verificarAutenticacion(req, res, next) {
+ /* function verificarAutenticacion(req, res, next) {
     if (req.session.user) {
       next(); // El usuario está autenticado
     } else {
       res.status(401).json({ error: 'No autorizado' }); // Respuesta de error si no está autenticado
     }
-  }
+  }*/
 
   // Rutas de autenticación
   server.post('/api/login', (req, res) => {
@@ -69,26 +69,43 @@ app.prepare().then(() => {
   });
 
   // Ruta para obtener el carrito desde la sesión
-  server.get('/api/cart', verificarAutenticacion, (req, res) => {
+  server.get('/api/cart', /*verificarAutenticacion,*/ (req, res) => {
     const cart = req.session.cart || []; // Si no hay carrito en la sesión, retorna un array vacío
     res.json(cart); // Envía el carrito al frontend
   });
 
   // Ruta para agregar un servicio al carrito
-  server.post('/api/cart', verificarAutenticacion, (req, res) => {
-    const { service } = req.body; // Recibe el servicio desde el frontend
-    if (!service) {
-      return res.status(400).json({ error: 'Servicio no proporcionado' }); // Error si no se proporciona el servicio
-    }
-    if (!req.session.cart) {
-      req.session.cart = []; // Inicializa el carrito si está vacío
-    }
-    req.session.cart.push(service); // Agrega el servicio al carrito
-    res.json({ message: 'Servicio agregado al carrito', cart: req.session.cart }); // Retorna el carrito actualizado
-  });
+server.post('/api/cart', /* verificarAutenticacion, */ (req, res) => {
+  const { serviceId } = req.body; // Recibe el id del servicio desde el frontend
+
+  // Verifica que se haya proporcionado un id de servicio
+  if (!serviceId) {
+    return res.status(400).json({ error: 'ID del servicio no proporcionado' });
+  }
+
+  // Buscar el servicio por id
+  const service = services.find(s => s.id === serviceId);
+  
+  // Si el servicio no existe, devolver error
+  if (!service) {
+    return res.status(404).json({ error: 'Servicio no encontrado' });
+  }
+
+  // Si no existe un carrito en la sesión, inicializarlo
+  if (!req.session.cart) {
+    req.session.cart = [];
+  }
+
+  // Agregar el servicio al carrito
+  req.session.cart.push(service);
+
+  // Responder con el carrito actualizado
+  res.json({ message: 'Servicio agregado al carrito', cart: req.session.cart });
+});
+
 
   // Ruta para eliminar un servicio del carrito
-  server.delete('/api/cart', verificarAutenticacion, (req, res) => {
+  server.delete('/api/cart', /*verificarAutenticacion,*/ (req, res) => {
     const { service } = req.body; // Recibe el servicio desde el frontend
     if (req.session.cart) {
       req.session.cart = req.session.cart.filter((s) => s.id !== service.id); // Elimina por ID en lugar de nombre
