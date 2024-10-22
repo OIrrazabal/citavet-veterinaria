@@ -60,17 +60,29 @@ export default function Services() {
   const router = useRouter();
 
   const handleAddToCart = async (service, quantity) => {
-    // Agregar el servicio al carrito según la cantidad
-    for (let i = 0; i < quantity; i++) {
-      await addToCart(service); // Espera a que se agregue el servicio al carrito
-    }
-    alert(`Has agregado ${quantity} ${service.name}(s) al carrito.`);
-  };
+  console.log(`Intentando agregar al carrito: ${JSON.stringify(service)}`); // Log del servicio
+  for (let i = 0; i < quantity; i++) {
+    // Asegúrate de que `addToCart` esté enviando el `id`
+    await addToCart(service.id); // Enviar solo el `id` del servicio
+  }
+  alert(`Has agregado ${quantity} ${service.name}(s) al carrito.`);
+};
 
-  const handleRemoveFromCart = async (service) => {
-    await removeFromCart(service); // Lógica para eliminar el servicio del carrito
-    alert(`Has eliminado ${service.name} del carrito.`);
-  };
+const handleRemoveFromCart = async (service) => {
+  try {
+    console.log(`Eliminando servicio del carrito con ID: ${service}`);
+    
+    // Llama a la función removeFromCart pasando solo el ID del servicio
+    await removeFromCart(service.id);
+
+    console.log(`Servicio eliminado: ${service}`);
+    alert(`Has eliminado el servicio del carrito.`);
+  } catch (error) {
+    console.error('Error al eliminar del carrito:', error);
+    alert('Error al eliminar el servicio del carrito.');
+  }
+};
+
 
   // Calcular el total del carrito
   const total = cart.reduce((acc, service) => acc + service.price, 0);
@@ -84,11 +96,10 @@ export default function Services() {
         {/* Sección de servicios */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8">
           {services.map((service) => {
-            const isInCart = cart.some(item => item.id === service.id); // Verifica si el servicio está en el carrito
-            const serviceCount = cart.filter(item => item.id === service.id).length; // Cuenta cuántas veces está el servicio en el carrito
+            const isInCart = cart.some(item => item.id === service.id);
+            const serviceCount = cart.filter(item => item.id === service.id).length;
 
-            // Estado para manejar la cantidad a agregar
-            const [quantity, setQuantity] = useState(1); // Inicializa la cantidad en 1
+            const [quantity, setQuantity] = useState(1);
 
             return (
               <div
@@ -98,9 +109,8 @@ export default function Services() {
                 <div className="text-4xl mb-4">{service.icon}</div>
                 <h3 className="text-lg font-semibold mb-4">{service.name}</h3>
                 <p className="text-sm text-gray-600">{service.description}</p> 
-                <p className="text-lg font-semibold mb-4">{service.price.toLocaleString('es-PY')} Gs.</p> {/* Mostrar precio */}
+                <p className="text-lg font-semibold mb-4">{service.price.toLocaleString('es-PY')} Gs.</p>
                 
-                {/* Campo para ingresar la cantidad */}
                 <div className="flex items-center mb-2">
                   <label className="mr-2">Cantidad:</label>
                   <input 
@@ -112,23 +122,20 @@ export default function Services() {
                   />
                 </div>
 
-                {/* Mostrar la cantidad de servicios en el carrito */}
                 {isInCart && (
                   <p className="text-sm text-gray-500">Cantidad en carrito: {serviceCount}</p>
                 )}
 
                 <button
-                  onClick={() => handleAddToCart(service, quantity)} // Lógica para agregar al carrito
+                  onClick={() => handleAddToCart(service, quantity)}
                   className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300 mb-2"
-                  //disabled={isInCart} // Desactiva el botón si ya está en el carrito
                 >
                   {isInCart ? 'Ya en el Carrito' : 'Agregar al Carrito'}
                 </button>
 
-                {/* Botón para eliminar del carrito */}
                 {isInCart && (
                   <button
-                    onClick={() => handleRemoveFromCart(service)} // Lógica para eliminar del carrito
+                    onClick={() => handleRemoveFromCart(service.id)}
                     className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition-colors duration-300"
                   >
                     Eliminar
@@ -139,7 +146,6 @@ export default function Services() {
           })}
         </div>
 
-        {/* Mostrar total del carrito */}
         <div className="text-right mt-5">
           <h2 className="text-2xl font-bold">Total: {total.toLocaleString('es-PY')} Gs.</h2>
         </div>
@@ -147,4 +153,3 @@ export default function Services() {
     </Layout>
   );
 }
-

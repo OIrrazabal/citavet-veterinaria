@@ -26,43 +26,38 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  const addToCart = async (service) => {
-    setLoading(true);
-    setError(null);
-    let response; // Declarar response aquí
+  const addToCart = async (serviceId) => {
     try {
-      response = await axios.post(
-        'http://localhost:3000/api/cart',
-        { service },
-        { withCredentials: true }
-      );
-      setCart(response.data.cart); // Actualiza el carrito con el nuevo servicio agregado
+      const response = await axios.post('/api/cart', { serviceId }); // Asegúrate de que se envía el ID
+      console.log('Respuesta del servidor al agregar al carrito:', response.data); // Log de la respuesta
+      // Actualiza el estado del carrito según la respuesta
+      setCart(response.data.cart);
     } catch (error) {
-      setError('Error al agregar el servicio al carrito.');
-      console.error('Error al agregar el servicio al carrito', error);
-    } finally {
-      setLoading(false);
+      console.error('Error al agregar al carrito:', error);
     }
-    return response; // Ahora response está definida correctamente
   };
+  
+  
 
-  // Función para eliminar un servicio del carrito en el backend (Express)
-  const removeFromCart = async (service) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await axios.delete('http://localhost:3000/api/cart', {
-        data: { service }, // Eliminar el servicio del carrito
-        withCredentials: true,
-      });
-      setCart(response.data.cart || []); // Actualiza el carrito después de la eliminación
-    } catch (error) {
-      setError('Error al eliminar el servicio del carrito.');
-      console.error('Error al eliminar el servicio del carrito', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+// Función para eliminar un servicio del carrito en el backend (Express)
+const removeFromCart = async (serviceId) => {
+  setLoading(true);
+  setError(null);
+  try {
+    const response = await axios.delete('http://localhost:3000/api/cart', {
+      data: { service: { id: serviceId } }, // Enviar el id del servicio a eliminar
+      withCredentials: true,
+    });
+    setCart(response.data.cart || []); // Actualiza el carrito después de la eliminación
+    console.log('Servicio eliminado del carrito:', response.data.cart); // Log del carrito actualizado
+  } catch (error) {
+    setError('Error al eliminar el servicio del carrito.');
+    console.error('Error al eliminar el servicio del carrito:', error);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   // Obtener el carrito de la sesión cuando se monta el componente
   useEffect(() => {
