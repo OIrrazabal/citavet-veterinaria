@@ -20,10 +20,10 @@ const Cart = () => {
       ) : (
         <ul className="list-disc">
           {cart.map((item) => (
-            <li key={item.id} className="flex justify-between items-center mb-2"> {/* Usar item.id en vez de index */}
+            <li key={item.id} className="flex justify-between items-center mb-2">
               <span>{item.name}</span>
               <button
-                onClick={() => removeFromCart(item)}
+                onClick={() => removeFromCart(item.id)} // Asegúrate de pasar solo el ID
                 className="bg-red-500 text-white px-2 py-1 rounded"
               >
                 Eliminar
@@ -37,4 +37,6 @@ const Cart = () => {
 };
 
 export default Cart;
+
+
 

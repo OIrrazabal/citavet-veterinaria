@@ -115,26 +115,29 @@ app.prepare().then(() => {
     res.json({ message: 'Servicio agregado al carrito', cart: req.session.cart });
   });
 
-  // Ruta para eliminar un servicio del carrito
-  server.delete('/api/cart', /*verificarAutenticacion,*/ (req, res) => {
-    const { serviceId } = req.body; // Recibe el ID del servicio desde el frontend
-    console.log(`Solicitud para eliminar servicio ID: ${serviceId}`); // Log de solicitud
+// Ruta para eliminar un servicio del carrito
+server.delete('/api/cart', /*verificarAutenticacion,*/ (req, res) => {
+  const { serviceId } = req.body; // Cambiamos aquí para obtener directamente el serviceId
+  console.log(`Solicitud para eliminar servicio ID: ${serviceId}`); // Log de solicitud
 
-    if (req.session.cart) {
-      const originalLength = req.session.cart.length; // Longitud original del carrito
-      req.session.cart = req.session.cart.filter((s) => s.id !== serviceId); // Elimina por ID en lugar de nombre
+  if (req.session.cart) {
+    const originalLength = req.session.cart.length; // Longitud original del carrito
+    req.session.cart = req.session.cart.filter((s) => s.id !== serviceId); // Elimina por ID
 
-      if (req.session.cart.length < originalLength) {
-        console.log(`Servicio eliminado del carrito: ID ${serviceId}`); // Log del servicio eliminado
-      } else {
-        console.log(`Servicio no encontrado en el carrito: ID ${serviceId}`); // Log de no encontrado
-      }
+    if (req.session.cart.length < originalLength) {
+      console.log(`Servicio eliminado del carrito: ID ${serviceId}`); // Log del servicio eliminado
     } else {
-      console.log('No hay carrito en la sesión'); // Log de carrito no existente
+      console.log(`Servicio no encontrado en el carrito: ID ${serviceId}`); // Log de no encontrado
     }
 
-    res.json({ message: 'Servicio eliminado del carrito', cart: req.session.cart }); // Retorna el carrito actualizado
-  });
+    console.log('Carrito después de la eliminación:', req.session.cart); // Log del carrito actualizado
+  } else {
+    console.log('No hay carrito en la sesión'); // Log de carrito no existente
+  }
+
+  res.json({ message: 'Servicio eliminado del carrito', cart: req.session.cart }); // Retorna el carrito actualizado
+});
+
 
   // Delegar el manejo de todas las rutas a Next.js
   server.all('*', (req, res) => {

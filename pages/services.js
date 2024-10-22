@@ -60,29 +60,25 @@ export default function Services() {
   const router = useRouter();
 
   const handleAddToCart = async (service, quantity) => {
-  console.log(`Intentando agregar al carrito: ${JSON.stringify(service)}`); // Log del servicio
-  for (let i = 0; i < quantity; i++) {
-    // Asegúrate de que `addToCart` esté enviando el `id`
-    await addToCart(service.id); // Enviar solo el `id` del servicio
-  }
-  alert(`Has agregado ${quantity} ${service.name}(s) al carrito.`);
-};
+    console.log(`Intentando agregar al carrito: ${JSON.stringify(service)}`); // Log del servicio
+    for (let i = 0; i < quantity; i++) {
+      await addToCart(service.id); // Enviar solo el `id` del servicio
+    }
+    alert(`Has agregado ${quantity} ${service.name}(s) al carrito.`);
+  };
 
-const handleRemoveFromCart = async (service) => {
-  try {
-    console.log(`Eliminando servicio del carrito con ID: ${service}`);
-    
-    // Llama a la función removeFromCart pasando solo el ID del servicio
-    await removeFromCart(service.id);
+  const handleRemoveFromCart = async (serviceId) => {
+    try {
+      console.log(`Eliminando servicio del carrito con ID: ${serviceId}`); // Log del ID
+      await removeFromCart(serviceId); // Pasa solo el ID del servicio
 
-    console.log(`Servicio eliminado: ${service}`);
-    alert(`Has eliminado el servicio del carrito.`);
-  } catch (error) {
-    console.error('Error al eliminar del carrito:', error);
-    alert('Error al eliminar el servicio del carrito.');
-  }
-};
-
+      console.log(`Servicio eliminado: ID ${serviceId}`);
+      alert(`Has eliminado el servicio del carrito.`);
+    } catch (error) {
+      console.error('Error al eliminar del carrito:', error);
+      alert('Error al eliminar el servicio del carrito.');
+    }
+  };
 
   // Calcular el total del carrito
   const total = cart.reduce((acc, service) => acc + service.price, 0);
@@ -135,7 +131,7 @@ const handleRemoveFromCart = async (service) => {
 
                 {isInCart && (
                   <button
-                    onClick={() => handleRemoveFromCart(service.id)}
+                    onClick={() => handleRemoveFromCart(service.id)} // Asegúrate de pasar el ID
                     className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition-colors duration-300"
                   >
                     Eliminar

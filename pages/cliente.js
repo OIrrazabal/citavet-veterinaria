@@ -59,7 +59,7 @@ const ClientePage = () => {
                             </p>
                             <button
                               className="text-red-500 hover:text-red-700"
-                              onClick={() => removeFromCart(service)} // Pasar todo el servicio para eliminar correctamente
+                              onClick={() => removeFromCart(service.id)} // Pasar todo el servicio para eliminar correctamente
                             >
                               Eliminar
                             </button>

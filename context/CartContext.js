@@ -1,4 +1,3 @@
-// context/CartContext.js
 import { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios'; // Asegúrate de tener Axios instalado (npm install axios)
 
@@ -36,16 +35,14 @@ export const CartProvider = ({ children }) => {
       console.error('Error al agregar al carrito:', error);
     }
   };
-  
-  
 
-// Función para eliminar un servicio del carrito en el backend (Express)
+// context/CartContext.js
 const removeFromCart = async (serviceId) => {
   setLoading(true);
   setError(null);
   try {
-    const response = await axios.delete('http://localhost:3000/api/cart', {
-      data: { service: { id: serviceId } }, // Enviar el id del servicio a eliminar
+    const response = await axios.delete('/api/cart', {
+      data: { serviceId }, // Enviar solo el ID del servicio
       withCredentials: true,
     });
     setCart(response.data.cart || []); // Actualiza el carrito después de la eliminación
@@ -70,5 +67,3 @@ const removeFromCart = async (serviceId) => {
     </CartContext.Provider>
   );
 };
-
-
