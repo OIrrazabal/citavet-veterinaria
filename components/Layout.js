@@ -34,14 +34,14 @@ const Layout = ({ children }) => {
       },
     },
     {
-      label: 'About Us',
+      label: 'Nosotros',
       icon: 'pi pi-info-circle',
       command: () => {
         router.push('/about');
       },
     },
     {
-      label: 'Login',
+      label: 'Mi cuenta',
       icon: 'pi pi-user',
       command: () => {
         router.push('/login');
@@ -58,6 +58,7 @@ const Layout = ({ children }) => {
             {/* Logo o nombre */}
             <div className="text-2xl font-bold">
               <a href="#">Wonder Pet</a>
+              <a href="#" className="text-sm text-gray-500">  Veterinaria</a>
             </div>
 
             {/* Menú de navegación usando PrimeReact */}
