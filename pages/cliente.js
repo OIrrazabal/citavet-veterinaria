@@ -1,6 +1,9 @@
 import Layout from '../components/Layout'; // Importa el Layout
 import { useUser } from '../context/UserContext'; // Usa el contexto de usuario
 import { useCart } from '../context/CartContext'; // Importa el contexto del carrito
+import 'primereact/resources/themes/saga-blue/theme.css';  // theme
+import 'primereact/resources/primereact.min.css';          // core css
+import 'primeicons/primeicons.css';                        // icons
 
 const ClientePage = () => {
   const { user } = useUser(); // Obtiene el usuario autenticado del UserContext
@@ -134,5 +137,3 @@ const ClientePage = () => {
 };
 
 export default ClientePage;
-
-

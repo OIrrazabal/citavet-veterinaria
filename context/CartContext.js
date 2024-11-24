@@ -26,6 +26,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const addToCart = async (serviceId) => {
+    console.log(`Adding to cart: ID ${serviceId}`); // Log the ID being added
     try {
       const response = await axios.post('/api/cart', { serviceId }); // Asegúrate de que se envía el ID
       console.log('Respuesta del servidor al agregar al carrito:', response.data); // Log de la respuesta

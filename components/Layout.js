@@ -20,17 +20,10 @@ const Layout = ({ children }) => {
       },
     },
     {
-      label: 'Servicios',
-      icon: 'pi pi-briefcase',
-      command: () => {
-        router.push('/services');
-      },
-    },
-    {
       label: 'Tienda',
       icon: 'pi pi-shopping-cart',
       command: () => {
-        router.push('/store');
+        router.push('/services');
       },
     },
     {
@@ -57,8 +50,8 @@ const Layout = ({ children }) => {
           <div className="flex justify-between items-center py-4">
             {/* Logo o nombre */}
             <div className="text-2xl font-bold">
-              <a href="#">Wonder Pet</a>
-              <a href="#" className="text-sm text-gray-500">  Veterinaria</a>
+              <a href="/">Wonder Pet</a>
+              <a href="/" className="text-sm text-gray-500">  Veterinaria</a>
             </div>
 
             {/* Menú de navegación usando PrimeReact */}
